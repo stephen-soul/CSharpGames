@@ -11,6 +11,9 @@ namespace LearningMonoGame
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        
+        private Texture2D _wall;
+        private Texture2D _floor;
 
         public Game1()
         {
@@ -41,7 +44,9 @@ namespace LearningMonoGame
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
-        }
+            _wall = Content.Load<Texture2D>("Wall");
+            _floor = Content.Load<Texture2D>("Floor");
+        }   
 
         /// <summary>
         /// UnloadContent will be called once per game and is the place to unload
@@ -76,6 +81,10 @@ namespace LearningMonoGame
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
+            spriteBatch.Begin();
+            spriteBatch.Draw(_wall, Vector2.Zero, Color.White);
+            spriteBatch.Draw(_floor, new Vector2(64, 64), Color.White);
+            spriteBatch.End();
 
             base.Draw(gameTime);
         }
