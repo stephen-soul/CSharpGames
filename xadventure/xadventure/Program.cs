@@ -5,6 +5,7 @@
  */
 
 using System;
+using Engine;
 
 namespace xadventure
 {
@@ -12,16 +13,16 @@ namespace xadventure
     {
         public static void Main(string[] args)
         {
-			Logic gameLogic = new Logic();
 			// If args exist, check for a save. Else, new game
 			if (args.Length > 0)
 			{
-				gameLogic.TryToLoadGame(args[0]);
-			}
+                Initialize _initialize = new Initialize(args[0]);
+            }
 			else 
 			{
-				gameLogic.StartNewGame();
-			}
+                Initialize _initialize = new Initialize();
+            }
+            Console.ReadLine();
         }
     }
 }
