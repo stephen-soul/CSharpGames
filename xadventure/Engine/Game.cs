@@ -15,14 +15,21 @@ namespace Engine
     class Game
     {
         private ConsoleFunctionality _function;
+
+        private string _name; // Name to be given to the player class
+        private string _role; // Role (class) to be given to the player class 
+
+        private int gameState;
+
         private enum GAME_STATE
         {
             GAMESTATE_GETNAME,
+            GAMESTATE_GETCLASS,
+            GAMESTATE_MADECHAR,
+            GAMESTATE_CONFIRMCHAR,
             GAMESTATE_INTRO,
             GAMESTATE_CHAPTER1
         }
-
-        private int gameState;
 
         /// <summary>
         /// Constructor for new game.
@@ -31,6 +38,8 @@ namespace Engine
         {
             _function = new ConsoleFunctionality();
             gameState = (int)GAME_STATE.GAMESTATE_GETNAME;
+            _name = "";
+            _role = "";
             Advance();
         }
 
@@ -42,6 +51,8 @@ namespace Engine
         {
             _function = new ConsoleFunctionality();
             gameState = gamestate;
+            _name = "";
+            _role = "";
             Advance();
         }
 
@@ -50,7 +61,38 @@ namespace Engine
         /// </summary>
         private void TakeUserInput()
         {
-            _function.Write(_function.GetInput());
+            _function.Read(); // Read the user input through the console
+
+            switch (gameState)
+            {
+                case (int)GAME_STATE.GAMESTATE_GETNAME:
+                    _name = _function.GetInput().ToLower();
+                    break;
+                case (int)GAME_STATE.GAMESTATE_GETCLASS:
+                    _role = _function.GetInput().ToLower();
+                    break;
+                case (int)GAME_STATE.GAMESTATE_CONFIRMCHAR:
+                    switch (_function.GetInput().ToLower())
+                    {
+                        case "yes":
+                        case "y":
+                            gameState = (int)GAME_STATE.GAMESTATE_INTRO;
+                            break;
+                        case "no":
+                        case "n":
+                            gameState = (int)GAME_STATE.GAMESTATE_GETNAME;
+                            break;
+                        default:
+                            _function.Write("Please try again.");
+                            gameState = (int)GAME_STATE.GAMESTATE_MADECHAR;
+                            break;
+                    }
+                    break;
+                default:
+                    break;
+            }
+
+            Advance();
         }
 
         /// <summary>
@@ -62,7 +104,15 @@ namespace Engine
             {
                 case (int)GAME_STATE.GAMESTATE_GETNAME:
                     _function.Write("What's your name?");
-                    _function.Read();
+                    gameState = (int)GAME_STATE.GAMESTATE_GETCLASS;
+                    break;
+                case (int)GAME_STATE.GAMESTATE_GETCLASS:
+                    _function.Write("What's your class?");
+                    gameState = (int)GAME_STATE.GAMESTATE_MADECHAR;
+                    break;
+                case (int)GAME_STATE.GAMESTATE_MADECHAR:
+                    _function.Write("Confirm: (Y)es, (N)o");
+                    gameState = (int)GAME_STATE.GAMESTATE_CONFIRMCHAR;
                     break;
                 default:
                     break;

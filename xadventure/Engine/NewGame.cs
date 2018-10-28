@@ -14,6 +14,7 @@ namespace Engine
     {
         private Game _game;
         private string _playerName;
+
         /// <summary>
         /// Constructor if we don't have a player name.
         /// </summary>
