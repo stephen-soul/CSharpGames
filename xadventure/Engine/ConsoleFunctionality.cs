@@ -12,12 +12,15 @@ namespace Engine
     {
         private string input; // User input
 
+        private Text _messages;
+
         /// <summary>
         /// Initializes a new instance of console functionality.
         /// </summary>
         public ConsoleFunctionality()
         {
             input = ""; // On initialize, empty the input
+            _messages = new Text();
         }
 
         /// <summary>
@@ -36,6 +39,11 @@ namespace Engine
         public void Write(string input)
         {
             Console.WriteLine(input);
+        }
+
+        public void WriteError(int errorNum)
+        {
+            Console.WriteLine(_messages.GetError(errorNum));
         }
 
         /// <summary>
